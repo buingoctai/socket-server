@@ -3,6 +3,7 @@
 const app = require('express')();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
+const port = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
     res.send('<h1>Hello world</h1>');
@@ -48,6 +49,8 @@ io.on('connection', (socket) => {
         io.to(CLIENT['bot']).emit('OUTPUT BUILD', output);
     });
 });
-server.listen(80, () => {
+server.listen(port, () => {
     console.log('listening on *:80');
 });
+
+// heroku logs --tail --app socket-build
