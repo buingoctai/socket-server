@@ -39,11 +39,11 @@ io.on('connection', (socket) => {
         const isBotMac = CLIENT['bot-mac'] === socket.id;
 
         if (isBotWin && isWin) {
-            console.log("request build win");
+            console.log(`request win builder: ${msg.action}`);
             io.to(CLIENT['win']).emit('REQUEST BUILDER', msg);
         }
         else if (isBotMac && isMac) {
-            console.log("request build mac");
+            console.log(`request mac builder: ${msg.action}`);
             io.to(CLIENT['mac']).emit('REQUEST BUILDER', msg);
         }
         else if (isBotWin && !isWin) {
@@ -76,7 +76,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('OUTPUT BUILD', (output) => {
-        console.log('--------Output from builder----------');
+        console.log('--------Output from builder----------', output.code);
         io.to(CLIENT['bot']).emit('OUTPUT BUILD', output);
         switch (output.buildPlatform) {
             case 'win':
@@ -105,6 +105,7 @@ server.listen(port, () => {
     console.log(`listening on *:${port}`);
 
 });
+// heroku restart -a socket-build
 
 // heroku logs --tail --app socket-build
 
