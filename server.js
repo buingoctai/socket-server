@@ -76,7 +76,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('OUTPUT BUILD', (output) => {
-        console.log('--------Output from builder----------', output.code);
+        console.log('--------Output from builder----------', output.buildPlatform, output.code);
         io.to(CLIENT['bot']).emit('OUTPUT BUILD', output);
         switch (output.buildPlatform) {
             case 'win':
