@@ -27,12 +27,13 @@ const BUILD_MESSAGE = {
     ERROR_BUILDER: 'Builder was error in build processing.',
     ERROR_BUILDER_UPLOAD: "The file was fail uploaded.",
     ERROR_BUILDER_INVALID_BRANCH: 'The branch is invalid.',
+    ERROR_BUILDER_INVALID_TAG: 'The tag is invalid.',
+    ERROR_NON_VPN: 'Non vpn connection',
     ERROR_SERVER_CRASH: 'The connection was turned off by server.',
     ERROR_UNKNOW: 'Unknow from server.',
     /* socket server */
     ERROR_WIN_NOT_READY: 'The win builder is not ready to serve now',
     ERROR_MAC_NOT_READY: 'The mac builder is not ready to serve now',
-
 };
 
 
