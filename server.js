@@ -115,6 +115,25 @@ io.on('connection', (socket) => {
     for (const prop in CLIENT) {
       if (CLIENT[prop] === socket.id) {
         delete CLIENT[prop];
+        // return error to client if builders stop suddenly
+        if (prop === 'win') {
+          const msg = {
+            action: 'ERROR',
+            buildPlatform: 'win',
+            code: 'ERROR_WIN_NOT_READY',
+            message: BUILD_MESSAGE['ERROR_WIN_NOT_READY'],
+          };
+          io.to(CLIENT['bot-win']).emit('OUTPUT BUILD', msg);
+        }
+        if (prop === 'mac') {
+          const msg = {
+            action: 'ERROR',
+            buildPlatform: 'mac',
+            code: 'ERROR_MAC_NOT_READY',
+            message: BUILD_MESSAGE['ERROR_MAC_NOT_READY'],
+          };
+          io.to(CLIENT['bot-mac']).emit('OUTPUT BUILD', msg);
+        }
       }
     }
     console.log('CLIENT', CLIENT);
