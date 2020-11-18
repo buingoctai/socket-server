@@ -95,13 +95,13 @@ io.on('connection', (socket) => {
       case 'win':
         io.to(CLIENT['bot-win']).emit('OUTPUT BUILD', {
           ...output,
-          matchGroupWin, // return match group
+          matchGroup: matchGroupWin, // return match group
         });
         break;
       case 'mac':
         io.to(CLIENT['bot-mac']).emit('OUTPUT BUILD', {
           ...output,
-          matchGroupMac, // return match group
+          matchGroup: matchGroupMac, // return match group
         });
         break;
       default:
