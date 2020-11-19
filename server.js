@@ -2,7 +2,11 @@ const app = require('express')();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 const port = process.env.PORT || 3000;
-const { BUILD_MESSAGE } = require('./utils/constants');
+const {
+  BUILD_MESSAGE,
+  WIN_NOT_READY,
+  MAC_NOT_READY,
+} = require('./utils/constants');
 
 app.get('/', (req, res) => {
   res.send('<h1>Hello world</h1>');
@@ -65,21 +69,9 @@ io.on('connection', (socket) => {
       // save lasted action
       lastedActionMac = msg.action;
     } else if (isBotWin && !isWin) {
-      const msg = {
-        action: 'ERROR',
-        buildPlatform: 'win',
-        code: 'ERROR_WIN_NOT_READY',
-        message: BUILD_MESSAGE['ERROR_WIN_NOT_READY'],
-      };
-      io.to(CLIENT['bot-win']).emit('OUTPUT BUILD', msg);
+      io.to(CLIENT['bot-win']).emit('OUTPUT BUILD', WIN_NOT_READY);
     } else if (isBotMac && !isMac) {
-      const msg = {
-        action: 'ERROR',
-        buildPlatform: 'mac',
-        code: 'ERROR_MAC_NOT_READY',
-        message: BUILD_MESSAGE['ERROR_MAC_NOT_READY'],
-      };
-      io.to(CLIENT['bot-mac']).emit('OUTPUT BUILD', msg);
+      io.to(CLIENT['bot-mac']).emit('OUTPUT BUILD', MAC_NOT_READY);
     } else {
       const msg = {
         action: 'ERROR',
@@ -125,22 +117,10 @@ io.on('connection', (socket) => {
         delete CLIENT[prop];
         // return error to client if builders stop suddenly
         if (prop === 'win' && lastedActionWin !== 'CANCEL') {
-          const msg = {
-            action: 'ERROR',
-            buildPlatform: 'win',
-            code: 'ERROR_WIN_NOT_READY',
-            message: BUILD_MESSAGE['ERROR_WIN_NOT_READY'],
-          };
-          io.to(CLIENT['bot-win']).emit('OUTPUT BUILD', msg);
+          io.to(CLIENT['bot-win']).emit('OUTPUT BUILD', WIN_NOT_READY);
         }
         if (prop === 'mac' && lastedActionBot !== 'CANCEL') {
-          const msg = {
-            action: 'ERROR',
-            buildPlatform: 'mac',
-            code: 'ERROR_MAC_NOT_READY',
-            message: BUILD_MESSAGE['ERROR_MAC_NOT_READY'],
-          };
-          io.to(CLIENT['bot-mac']).emit('OUTPUT BUILD', msg);
+          io.to(CLIENT['bot-mac']).emit('OUTPUT BUILD', MAC_NOT_READY);
         }
       }
     }
