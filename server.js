@@ -11,6 +11,8 @@ app.get('/', (req, res) => {
 const CLIENT = {};
 let matchGroupWin;
 let matchGroupMac;
+let lastedActionWin;
+let lastedActionMac;
 
 io.on('connection', (socket) => {
   const {
@@ -50,13 +52,18 @@ io.on('connection', (socket) => {
     if (msg.action === 'STATE' && isBotMac) {
       matchGroupMac = msg.matchGroup;
     }
+
     // main handler
     if (isBotWin && isWin) {
       console.log(`request win builder: ${msg.action}`);
       io.to(CLIENT['win']).emit('REQUEST BUILDER', msg);
+      // save lasted action
+      lastedActionWin = msg.action;
     } else if (isBotMac && isMac) {
       console.log(`request mac builder: ${msg.action}`);
       io.to(CLIENT['mac']).emit('REQUEST BUILDER', msg);
+      // save lasted action
+      lastedActionMac = msg.action;
     } else if (isBotWin && !isWin) {
       const msg = {
         action: 'ERROR',
@@ -108,6 +115,7 @@ io.on('connection', (socket) => {
         return;
     }
   });
+
   socket.on('disconnect', () => {
     console.log('--------Remove socket client----------');
     console.log('disconnect', socket.id);
@@ -116,7 +124,7 @@ io.on('connection', (socket) => {
       if (CLIENT[prop] === socket.id) {
         delete CLIENT[prop];
         // return error to client if builders stop suddenly
-        if (prop === 'win') {
+        if (prop === 'win' && lastedActionWin !== 'CANCEL') {
           const msg = {
             action: 'ERROR',
             buildPlatform: 'win',
@@ -125,7 +133,7 @@ io.on('connection', (socket) => {
           };
           io.to(CLIENT['bot-win']).emit('OUTPUT BUILD', msg);
         }
-        if (prop === 'mac') {
+        if (prop === 'mac' && lastedActionBot !== 'CANCEL') {
           const msg = {
             action: 'ERROR',
             buildPlatform: 'mac',
