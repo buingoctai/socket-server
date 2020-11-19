@@ -119,7 +119,7 @@ io.on('connection', (socket) => {
         if (prop === 'win' && lastedActionWin !== 'CANCEL') {
           io.to(CLIENT['bot-win']).emit('OUTPUT BUILD', WIN_NOT_READY);
         }
-        if (prop === 'mac' && lastedActionBot !== 'CANCEL') {
+        if (prop === 'mac' && lastedActionMac !== 'CANCEL') {
           io.to(CLIENT['bot-mac']).emit('OUTPUT BUILD', MAC_NOT_READY);
         }
       }
