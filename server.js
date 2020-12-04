@@ -87,7 +87,8 @@ io.on('connection', (socket) => {
     console.log(
       '--------Output from builder----------',
       output.buildPlatform,
-      output.code
+      output.code,
+      output.message
     );
 
     switch (output.buildPlatform) {
@@ -96,12 +97,24 @@ io.on('connection', (socket) => {
           ...output,
           matchGroup: matchGroupWin, // return match group
         });
+        console.log(
+          '------- Send output from heroku-------to',
+          CLIENT['bot-win'],
+          '-------client at output-------',
+          CLIENT
+        );
         break;
       case 'mac':
         io.to(CLIENT['bot-mac']).emit('OUTPUT BUILD', {
           ...output,
           matchGroup: matchGroupMac, // return match group
         });
+        console.log(
+          '------- Send output from heroku-------to',
+          CLIENT['bot-mac'],
+          '-------client at output-------',
+          CLIENT
+        );
         break;
       default:
         return;
@@ -111,7 +124,7 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('--------Remove socket client----------');
     console.log('disconnect', socket.id);
-    console.log('CLIENT', CLIENT);
+    console.log('Before CLIENT', CLIENT);
     for (const prop in CLIENT) {
       if (CLIENT[prop] === socket.id) {
         delete CLIENT[prop];
@@ -124,14 +137,14 @@ io.on('connection', (socket) => {
         }
       }
     }
-    console.log('CLIENT', CLIENT);
+    console.log('After CLIENT', CLIENT);
   });
 });
 server.listen(port, () => {
   console.log(`listening on *:${port}`);
 });
-// heroku restart -a socket-build
+// heroku restart -a socket-build-new
 
-// heroku logs --tail --app socket-build
+// heroku logs --tail --app socket-build-new
 
 //547542490 / pass bananhhuynh!
