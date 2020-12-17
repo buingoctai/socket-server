@@ -44,11 +44,13 @@ io.on('connection', (socket) => {
   }
 
   socket.on('BUILD', (msg) => {
+    console.log('###### Receive Request BUILD From Client ######');
     const isWin = CLIENT.hasOwnProperty('win');
     const isMac = CLIENT.hasOwnProperty('mac');
-    const isBotWin = CLIENT['bot-win'] === socket.id;
-    const isBotMac = CLIENT['bot-mac'] === socket.id;
-
+    // const isBotWin = CLIENT['bot-win'] === socket.id;
+    // const isBotMac = CLIENT['bot-mac'] === socket.id;
+    const isBotWin = CLIENT['bot-win']?true:false;
+    const isBotMac = CLIENT['bot-mac']?true:false;
     // save match group
     if (msg.action === 'STATE' && isBotWin) {
       matchGroupWin = msg.matchGroup;
