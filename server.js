@@ -25,7 +25,7 @@ io.on('connection', (socket) => {
       query: { source },
     },
   } = socket;
-  console.log('New connection init ', socket.id, source);
+  console.log('##### New connection init ######', socket.id, source);
   switch (source) {
     case 'win':
       CLIENT['win'] = socket.id;
@@ -42,6 +42,7 @@ io.on('connection', (socket) => {
     default:
       break;
   }
+  console.log('#### CLIENT updated ###### ',CLIENT);
 
   socket.on('BUILD', (msg) => {
     console.log('###### Receive Request BUILD From Client ######');
