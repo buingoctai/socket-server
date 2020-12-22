@@ -148,8 +148,3 @@ io.on('connection', (socket) => {
 server.listen(port, () => {
   console.log(`listening on *:${port}`);
 });
-// heroku restart -a socket-build-new
-
-// heroku logs --tail --app socket-build-new
-
-//547542490 / pass bananhhuynh!
